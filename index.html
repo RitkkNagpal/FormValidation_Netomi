@@ -10,19 +10,18 @@
 </head>
 <body>
     <div class="container">            
-        <form name = "myForm">
-            <p>Can you please provide your personal details ?</p>
-            <br>
+        <form name = "myForm" action = "action_page.php"onsubmit="return validateForm()" method="post">
+            <p class = "heading">Can you please provide your personal details ?</p>
             <div class = "form-component">
                 <label for="name">
-                    Name
+                    <b>Name</b>
                     </br>
                     <input type="text" name = "user_name" id ="name" />
                 </label>
             </div>
             <div class = "form-component">
                 <label for="dob">
-                    Date of Birth
+                    <b>Date of Birth</b>
                     </br>
                     <input type="date" name="date_of_birth" id="dob">
                 </label>
@@ -30,21 +29,21 @@
 
             <div class="form-component">
                 <label for="phone">
-                    Contact Number
+                    <b>Contact Number</b>
                     </br>
                     <input type="number" name="contact_number" id = "phone" >
                 </label>
             </div>
 
             <div class="form-component">
-                    Country
+                    <b>Country</b>
                     </br>
                     <Select name = "countryNames" required id="country">
                     </Select>
             </div>
 
             <div class = "form-component">
-                State
+                <b>State</b>
                 </br>
                 <select name="state_names" required  id="state" disabled countrySelected = "false">
                 </select>
@@ -52,7 +51,7 @@
 
             <div class = "form-component">
                 <label for="email">
-                    Your Email
+                    <b>Your Email</b>
                     </br>
                     <input type="email" name="email_id" id="email">
                 </label>
@@ -61,7 +60,7 @@
                 <label for="submit-btn">
                     <br>
                     <!-- <input type="submit" id="submit-btn" value="Submit"> -->
-                    <button type="submit" id="submit-btn" onClick = "validateForm()">submit</button>
+                    <button type="submit" id="submit-btn" >submit</button>
                 </label>
             </div>
         </form>
@@ -74,9 +73,9 @@
     let contactNumberDiv = document.querySelector("#phone");
     let submit_btn = document.querySelector("#sumbit");
     let map = new Map(); // country codes vs states names
+    let dateDiv = document.querySelector("#dob");
 
-
-
+    console.log(dateDiv);
     function getName(){
         return nameDiv.value;
     }
@@ -115,6 +114,9 @@
         })
 
     }
+    function getDate(){
+        console.log(dateDiv.value);
+    }
     getData();
 
     function setError(err){
@@ -125,16 +127,18 @@
     function validateForm(){
         let name = getName();
         let contact_number = getContactNumber();
+        getDate();
         console.log("length" + name);
         if(name.length < 4 || name.length > 10){
-            setError("name");
-            return;
+            setError("Name");
+            return false;
         }
         if(contact_number.length != 10){
-            setError("contact number");
-            return;
+            setError("Contact Number");
+            return false;
         }
         alert(`Result : {"Success" : "All Fields are valid."}`);
+        return true;
     }
 </script>
 </html>
