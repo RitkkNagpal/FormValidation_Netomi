@@ -7,6 +7,10 @@ body{
     width: 100vw;
     height: 100vh;
 }
+iframe{
+    width: 50%;
+    height: 50%;
+}
 form{
     background-color: lightgray;
     margin: auto;
@@ -17,6 +21,8 @@ form{
     flex-direction: column;
     justify-content: space-around;
     align-items: start;
+    overflow: auto;
+
 }
 input{
     width:28vw;

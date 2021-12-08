@@ -9,15 +9,15 @@
     <title>Form Validation</title>
 </head>
 <body>
-    <div class="container">
-        <form>
+    <div class="container">            
+        <form name = "myForm">
             <p>Can you please provide your personal details ?</p>
             <br>
             <div class = "form-component">
                 <label for="name">
                     Name
                     </br>
-                    <input type="text" name = "user_name" id ="name"/>
+                    <input type="text" name = "user_name" id ="name" />
                 </label>
             </div>
             <div class = "form-component">
@@ -32,21 +32,21 @@
                 <label for="phone">
                     Contact Number
                     </br>
-                    <input type="number" name="contact_number" id = "phone">
+                    <input type="number" name="contact_number" id = "phone" >
                 </label>
             </div>
 
             <div class="form-component">
                     Country
                     </br>
-                    <Select name = "countryNames" id="country">
+                    <Select name = "countryNames" required id="country">
                     </Select>
             </div>
 
             <div class = "form-component">
                 State
                 </br>
-                <select name="state_names" id="state" disabled countrySelected = "false">
+                <select name="state_names" required  id="state" disabled countrySelected = "false">
                 </select>
             </div>
 
@@ -61,7 +61,7 @@
                 <label for="submit-btn">
                     <br>
                     <!-- <input type="submit" id="submit-btn" value="Submit"> -->
-                    <button type="submit" id="submit-btn" onClick = "fun()">submit</button>
+                    <button type="submit" id="submit-btn" onClick = "validateForm()">submit</button>
                 </label>
             </div>
         </form>
@@ -71,11 +71,18 @@
     let countrySelectDiv = document.querySelector("#country");
     let stateSelectDiv = document.querySelector("#state");
     let nameDiv = document.querySelector("#name");
-    let contactNumber = document.querySelector("#phone");
+    let contactNumberDiv = document.querySelector("#phone");
     let submit_btn = document.querySelector("#sumbit");
-
-
     let map = new Map(); // country codes vs states names
+
+
+
+    function getName(){
+        return nameDiv.value;
+    }
+    function getContactNumber(){
+        return contactNumberDiv.value
+    }
     function getData(){
         let url = "https://raw.githubusercontent.com/stefanbinder/countries-states/master/countries.json";
         fetch(url)
@@ -108,9 +115,26 @@
         })
 
     }
-    function fun(){
-        alert("hi")
-    }
     getData();
+
+    function setError(err){
+        let errMsg = (err == "name") ? "Length should be in between 4-10 characters}" : "Phone number should consist of 10 digits";
+        alert(`${err} : {"error" : ${errMsg}}`);
+    }
+
+    function validateForm(){
+        let name = getName();
+        let contact_number = getContactNumber();
+        console.log("length" + name);
+        if(name.length < 4 || name.length > 10){
+            setError("name");
+            return;
+        }
+        if(contact_number.length != 10){
+            setError("contact number");
+            return;
+        }
+        alert(`Result : {"Success" : "All Fields are valid."}`);
+    }
 </script>
 </html>
