@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <!-- <script src ="./script.js"></script> -->
+    <title>Form Validation</title>
+</head>
+<body>
+    <div class="container">
+        <form>
+            <p>Can you please provide your personal details ?</p>
+            <br>
+            <div class = "form-component">
+                <label for="name">
+                    Name
+                    </br>
+                    <input type="text" name = "user_name" id ="name"/>
+                </label>
+            </div>
+            <div class = "form-component">
+                <label for="dob">
+                    Date of Birth
+                    </br>
+                    <input type="date" name="date_of_birth" id="dob">
+                </label>
+            </div>
+
+            <div class="form-component">
+                <label for="phone">
+                    Contact Number
+                    </br>
+                    <input type="number" name="contact_number" id = "phone">
+                </label>
+            </div>
+
+            <div class="form-component">
+                    Country
+                    </br>
+                    <Select name = "countryNames" id="country">
+                    </Select>
+            </div>
+
+            <div class = "form-component">
+                State
+                </br>
+                <select name="state_names" id="state" disabled countrySelected = "false">
+                </select>
+            </div>
+
+            <div class = "form-component">
+                <label for="email">
+                    Your Email
+                    </br>
+                    <input type="email" name="email_id" id="email">
+                </label>
+            </div>
+            <div class="form-component">
+                <label for="submit-btn">
+                    <br>
+                    <!-- <input type="submit" id="submit-btn" value="Submit"> -->
+                    <button type="submit" id="submit-btn" onClick = "fun()">submit</button>
+                </label>
+            </div>
+        </form>
+    </div>
+</body>
+<script>
+    let countrySelectDiv = document.querySelector("#country");
+    let stateSelectDiv = document.querySelector("#state");
+    let nameDiv = document.querySelector("#name");
+    let contactNumber = document.querySelector("#phone");
+    let submit_btn = document.querySelector("#sumbit");
+
+
+    let map = new Map(); // country codes vs states names
+    function getData(){
+        let url = "https://raw.githubusercontent.com/stefanbinder/countries-states/master/countries.json";
+        fetch(url)
+        .then(function(res){
+            return res.json()
+        })
+        .then(function(data){
+            let countryNames = "<option></option>"; // default : None selected
+            for(let key in data){
+                // key-> 0,1,2,3,....,249
+                map.set(data[key].code2,data[key].states);
+                countryNames += `<option value="${data[key].code2}">${data[key].name}</option>`
+            }
+            countrySelectDiv.innerHTML = countryNames;
+        });
+
+        countrySelectDiv.addEventListener("input",function(e){
+            let selectedCountry = countrySelectDiv.value; // this gives the country code
+            if(selectedCountry){
+                // if selected country is a truthy value
+                let states = map.get(selectedCountry); 
+
+                stateSelectDiv.removeAttribute("disabled"); // if a country is selected then enable state input
+                let stateNames = "<option></option>"
+                for(let key in states){
+                    stateNames += `<option value="${states[key].code}">${states[key].name}</option>` 
+                }
+                stateSelectDiv.innerHTML = stateNames;
+            }
+        })
+
+    }
+    function fun(){
+        alert("hi")
+    }
+    getData();
+</script>
+</html>
